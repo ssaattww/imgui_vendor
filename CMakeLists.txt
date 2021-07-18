@@ -2,24 +2,32 @@ cmake_minimum_required(VERSION 3.5)
 project(imgui_vendor)
 
 find_package(ament_cmake REQUIRED)
-
 include(ExternalProject)
 
-ExternalProject_Add(imgui_docking
-    GIT_REPOSITORY https://github.com/ocornut/imgui
-    GIT_TAG a11f36811f1bd4db1d6b30cb1d34022294ba28ec
-    TIMEOUT 600
-    CMAKE_ARGS
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/imgui_docking
-        ${extra_cmake_args}
-        -Wno-dev
-    )
+set(OpenGL_GL_PREFERENCE GLVND)
 
-SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
-SOURCES += $(IMGUI_DIR)/backends/imgui_impl_glfw.cpp $(IMGUI_DIR)/backends/imgui_impl_opengl3.cpp
+find_package(glfw3 3.3 REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
 
-# The external project will install to the build folder, but we'll install that on make install.
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/imgui_docking/
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/opt/imgui_vendor
-    USE_SOURCE_PERMISSIONS
+add_library(imgui SHARED
+    imgui/imgui.cpp
+    imgui/imgui_demo.cpp
+    imgui/imgui_draw.cpp
+    imgui/imgui_tables.cpp
+    imgui/imgui_widgets.cpp
+    imgui/backends/imgui_impl_glfw.cpp
+    imgui/backends/imgui_impl_opengl3.cpp)
+target_include_directories(imgui PUBLIC imgui imgui/backends)
+target_link_libraries(imgui PUBLIC glfw OpenGL::GL GLEW::GLEW)
+
+add_executable(imgui_example src/main.cpp)
+target_link_libraries(imgui_example PRIVATE imgui)
+
+install(TARGETS imgui imgui_example EXPORT ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
+
+ament_package()

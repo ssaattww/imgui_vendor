@@ -48,9 +48,6 @@ int main(int, char **)
   // Setup Dear ImGui style
   ImGui::StyleColorsClassic();
 
-  // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
-  ImGuiStyle & style = ImGui::GetStyle();
-
   // Setup Platform/Renderer backends
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init(glsl_version);

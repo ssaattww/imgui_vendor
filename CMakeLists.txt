@@ -41,6 +41,7 @@ ament_export_dependencies(glfw3 OpenGL GLEW)
 install(FILES
   imgui/imgui.h
   imgui/imgui_internal.h
+  imgui/imstb_textedit.h
   imgui/backends/imgui_impl_opengl3.h
   imgui/backends/imgui_impl_glfw.h
   DESTINATION include)

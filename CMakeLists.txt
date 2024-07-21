@@ -52,10 +52,10 @@ install(TARGETS imgui EXPORT export_imgui
   RUNTIME DESTINATION lib/${PROJECT_NAME}
 )
 
-install(TARGETS imgui_example
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION lib/${PROJECT_NAME}
-)
+# install(TARGETS imgui_example
+#   ARCHIVE DESTINATION lib
+#   LIBRARY DESTINATION lib
+#   RUNTIME DESTINATION lib/${PROJECT_NAME}
+# )
 
 ament_package()
